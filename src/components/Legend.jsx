@@ -7,7 +7,7 @@ const Legend = ({ yScale, colorScale }) => {
   const legendHeight = 200; // in pixels
   const legendWidth = 20; // in pixels
 
-  const gradient = `linear-gradient(to top, ${colorScale.colors(ticks.length).join(', ')})`;
+  const gradient = `linear-gradient(to top, ${colorScale.range().join(', ')})`;
 
   return (
     <div style={{ position: 'absolute', top: '50%', right: '20px', transform: 'translateY(-50%)', display: 'flex', alignItems: 'center' }}>

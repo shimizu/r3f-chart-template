@@ -24,7 +24,7 @@ const Surface = ({ data, scales, colorScale }) => {
         positions[index * 3 + 1] = yScale(yValue);
 
         // 頂点カラーを設定
-        const color = new THREE.Color(colorScale(yValue).hex());
+        const color = new THREE.Color(colorScale(yValue));
         colors.push(color.r, color.g, color.b);
       }
     }
