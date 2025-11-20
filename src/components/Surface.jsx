@@ -14,13 +14,15 @@ const Surface = ({ data, scales, colorScale }) => {
     const positions = geom.attributes.position.array;
     const colors = [];
 
-    for (let i = 0; i <= widthSegments; i++) {
-      for (let j = 0; j <= heightSegments; j++) {
-        const index = (i * (heightSegments + 1) + j);
-        const dataIndex = j * (widthSegments + 1) + i;
+    // three.js PlaneGeometryは頂点を行優先（row-major）で生成する
+    // ループを j (行) -> i (列) の順にする必要がある
+    for (let j = 0; j <= heightSegments; j++) {
+      for (let i = 0; i <= widthSegments; i++) {
+        // 頂点インデックスとデータインデックスは同じになる
+        const index = j * (widthSegments + 1) + i;
         
         // Y座標をデータに応じて更新
-        const yValue = data.values[dataIndex] || 0;
+        const yValue = data.values[index] || 0;
         positions[index * 3 + 1] = yScale(yValue);
 
         // 頂点カラーを設定
