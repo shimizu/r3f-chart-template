@@ -12,8 +12,20 @@ function SurfaceScene({ data, scales, colorScale }) {
     <>
       <color attach="background" args={['#f0f0f0']} />
       
-      <ambientLight intensity={0.5} />
-      <pointLight position={[50, 50, 50]} intensity={1} />
+      <ambientLight intensity={0.8} />
+      <directionalLight
+        castShadow
+        position={[50, 50, 50]}
+        intensity={1.5}
+        shadow-mapSize-width={2048}
+        shadow-mapSize-height={2048}
+        shadow-camera-far={150}
+        shadow-camera-left={-50}
+        shadow-camera-right={50}
+        shadow-camera-top={50}
+        shadow-camera-bottom={-50}
+      />
+      <directionalLight position={[-50, -30, -50]} intensity={0.5} />
       
       <OrbitControls makeDefault />
 

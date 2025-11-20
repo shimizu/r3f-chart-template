@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { OrbitControls } from '@react-three/drei';
+import { OrbitControls, Environment } from '@react-three/drei';
 import { scaleLinear } from 'd3-scale';
 import Axis from './components/Axis';
 import ScatterPoints from './components/ScatterPoints';
@@ -45,8 +45,7 @@ function Scene(){
         <>
             <color attach="background" args={['#f0f0f0']} />
             
-            <ambientLight intensity={0.5} />
-            <pointLight position={[50, 50, 50]} intensity={1} castShadow />
+            <Environment preset="city" background />
             
             <OrbitControls makeDefault />
 
