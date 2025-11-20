@@ -1,68 +1,59 @@
-import { useEffect } from "react"
-import { OrbitControls, RandomizedLight } from "@react-three/drei"
-import * as THREE from "three"
-import { useControls } from "leva"
-import { useFrame, useThree } from "@react-three/fiber";
-import { Bloom, EffectComposer } from "@react-three/postprocessing";
-import chroma from 'chroma-js';
+import React, { useMemo } from 'react';
+import { OrbitControls } from '@react-three/drei';
+import { scaleLinear } from 'd3-scale';
+import Axis from './components/Axis';
+import ScatterPoints from './components/ScatterPoints';
 
+// --- 定数とヘルパー ---
+const POINT_SIZE = 0.1;
+const COLOR_RANGE = ['#ff6b6b', '#4ecdc4', '#ffe66d', '#1a535c', '#ff9f1c'];
 
-
-
-const vertexShader = `
-  varying vec3 vPosition;
-  
-  void main() {
-    vPosition = position;
-    gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+// ランダムデータの生成
+const generateData = (count = 100) => {
+  const data = [];
+  for (let i = 0; i < count; i++) {
+    data.push({
+      x: Math.random() * 100,
+      y: Math.random() * 100,
+      z: Math.random() * 100,
+      id: i,
+    });
   }
-`;
-
-const fragmentShader = `
-  varying vec3 vPosition;
-
-  void main() {
-    gl_FragColor = vec4(abs(vPosition), 1.0); // シンプルな色の変化
-  }
-`;
-
+  return data;
+};
 
 function Scene(){
+    const data = useMemo(() => generateData(100), []);
 
-    useFrame((state, delta)=>{
-        const boxPivot = state.scene.getObjectByName("boxPivot");
-        boxPivot.rotation.y += delta
-    })
+    const scales = useMemo(() => {
+        const range = [-10, 10]; 
+
+        return {
+        xScale: scaleLinear().domain([0, 100]).range(range),
+        yScale: scaleLinear().domain([0, 100]).range(range),
+        zScale: scaleLinear().domain([0, 100]).range(range),
+        domain: {
+            xMin: 0, xMax: 100,
+            yMin: 0, yMax: 100,
+            zMin: 0, zMax: 100
+        }
+        };
+    }, [data]);
+
 
     return (
         <>
+            <color attach="background" args={['#f0f0f0']} />
+            
+            <ambientLight intensity={0.5} />
+            <pointLight position={[50, 50, 50]} intensity={1} castShadow />
+            
+            <OrbitControls makeDefault />
 
-            <OrbitControls />
-
-            <RandomizedLight />
-
-            <EffectComposer>
-                <Bloom
-                    intensity={1}
-                    mipmapBlur={false}
-                    luminanceThreshold={0.9}
-                    luminanceSmoothing={0.025}
-                />
-            </EffectComposer>
-
-
-            <group name="boxPivot">
-                <mesh>
-                    <boxGeometry args={[1, 1, 1]} />
-                    <shaderMaterial
-                        vertexShader={vertexShader}
-                        fragmentShader={fragmentShader}
-                        uniforms={{}}
-                    />
-                </mesh>
-
+            <group>
+                <Axis scales={scales} domain={scales.domain} />
+                <ScatterPoints data={data} scales={scales} point_size={POINT_SIZE} color_range={COLOR_RANGE} />
             </group>
-                        
         </>
     )
 }
