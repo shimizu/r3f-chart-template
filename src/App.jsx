@@ -7,6 +7,7 @@ import { useGeoTiff } from './hooks/useGeoTiff';
 import SurfaceScene from './SurfaceScene';
 import BarChartScene from './BarChartScene';
 import ScatterPointsScene from './ScatterPointsScene';
+import CsvSurfaceScene from './CsvSurfaceScene'; // CsvSurfaceSceneをインポート
 import Legend from './components/Legend';
 import './App.css';
 
@@ -32,7 +33,10 @@ function App() {
         </p>
         <div className="chart-selector">
           <button onClick={() => setChartType('surface')} disabled={chartType === 'surface'}>
-            Surface Chart
+            GeoTIFF Surface
+          </button>
+          <button onClick={() => setChartType('csv-surface')} disabled={chartType === 'csv-surface'}>
+            CSV Surface
           </button>
           <button onClick={() => setChartType('bar')} disabled={chartType === 'bar'}>
             Bar Chart
@@ -52,6 +56,9 @@ function App() {
       >
         {chartType === 'surface' && (
           <SurfaceScene data={surfaceData} scales={scales} colorScale={surfaceColorScale} />
+        )}
+        {chartType === 'csv-surface' && (
+          <CsvSurfaceScene />
         )}
         {chartType === 'bar' && (
           <BarChartScene colorScale={genericColorScale} />

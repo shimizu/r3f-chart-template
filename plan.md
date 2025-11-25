@@ -32,4 +32,22 @@ This plan outlines the steps to refactor the application to allow users to switc
 
 -   Review and remove any unused components or files (like the potentially unused `Scene.jsx`).
 
+## 7. Add CSV Surface Chart
+
+-   **Create `useCsvData.js` hook:**
+    -   Create a new hook in `src/hooks/useCsvData.js`.
+    -   This hook will use `d3.csv` to fetch and parse the specified CSV file.
+    -   It will process the parsed data into a `{ width, height, values, min, max }` object, making it compatible with the `Surface` component. The `width` will be the number of columns, `height` the number of rows, and `values` a flat array of elevation data.
+
+-   **Create `CsvSurfaceScene.jsx`:**
+    -   Create a new scene component at `src/CsvSurfaceScene.jsx`.
+    -   This component will use the `useCsvData` hook to load data from `/data/mt_bruno_elevation.csv`.
+    -   It will create its own `scales` and `colorScale` based on the data returned from the hook.
+    -   It will render the `Axis` and `Surface` components, passing the appropriate props.
+
+-   **Integrate into `App.jsx`:**
+    -   Add a new chart type, `'csv-surface'`, to the state management.
+    *   Add a new button "CSV Surface Chart" to the UI.
+    -   Import `CsvSurfaceScene.jsx` and render it conditionally.
+
 By following these steps, the application will be transformed into a flexible demo platform for showcasing various `r3f` chart types.
