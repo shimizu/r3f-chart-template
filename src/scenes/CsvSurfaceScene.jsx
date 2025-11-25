@@ -1,11 +1,21 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { OrbitControls } from '@react-three/drei';
 import { useCsvData } from '../hooks/useCsvData';
 import Surface from '../components/Surface';
 import Axis from '../components/Axis';
 
-const CsvSurfaceScene = () => {
-  const { surfaceData, scales, colorScale } = useCsvData('/data/mt_bruno_elevation.csv');
+const CsvSurfaceScene = ({ onScalesReady }) => {
+  const { surfaceData, scales, colorScale } = useCsvData('data/mt_bruno_elevation.csv');
+
+  useEffect(() => {
+    if (scales && colorScale) {
+      onScalesReady({ yScale: scales.yScale, colorScale });
+    }
+    // コンポーネントがアンマウントされるときにLegendをクリアする
+    return () => {
+      onScalesReady(null);
+    };
+  }, [scales, colorScale, onScalesReady]);
 
   if (!surfaceData || !scales) {
     return null; // データが読み込まれるまで何も表示しない

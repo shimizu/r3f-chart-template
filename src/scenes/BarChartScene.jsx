@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useEffect } from 'react';
 import { OrbitControls } from '@react-three/drei';
 import { scaleLinear } from 'd3-scale';
 import Axis from '../components/Axis';
@@ -26,7 +26,11 @@ const generateBarData = () => {
   return data;
 };
 
-function BarChartScene({ colorScale }) {
+function BarChartScene({ colorScale, onScalesReady }) {
+  useEffect(() => {
+    onScalesReady(null);
+  }, [onScalesReady]);
+
   const data = useMemo(() => generateBarData(), []);
 
   const scales = useMemo(() => {

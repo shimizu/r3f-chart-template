@@ -3,8 +3,6 @@ import { Canvas } from '@react-three/fiber';
 import { scaleSequential } from 'd3-scale';
 import { interpolateTurbo } from 'd3-scale-chromatic';
 
-import { useGeoTiff } from './hooks/useGeoTiff';
-import { useCsvData } from './hooks/useCsvData'; // useCsvData をインポート
 import GeoTiffSurfaceScene from './scenes/GeoTiffSurfaceScene';
 import BarChartScene from './scenes/BarChartScene';
 import ScatterPointsScene from './scenes/ScatterPointsScene';
@@ -14,21 +12,12 @@ import './App.css';
 
 function App() {
   const [chartType, setChartType] = useState('surface');
-
-  // 各チャート用のデータをここで取得
-  const { scales: geoTiffScales, colorScale: geoTiffColorScale } = useGeoTiff('./data/sado_dem.tif') || {};
-  const { scales: csvScales, colorScale: csvColorScale } = useCsvData('./data/mt_bruno_elevation.csv') || {};
+  const [activeScales, setActiveScales] = useState(null);
 
   // BarChartとScatterChart用の汎用カラースケール
   const genericColorScale = useMemo(() => {
     return scaleSequential([0, 100], interpolateTurbo);
   }, []);
-
-  // 表示するLegendのスケールを決定
-  const legendScales = {
-    'surface': { yScale: geoTiffScales?.yScale, colorScale: geoTiffColorScale },
-    'csv-surface': { yScale: csvScales?.yScale, colorScale: csvColorScale },
-  }[chartType];
 
   return (
     <>
@@ -63,21 +52,21 @@ function App() {
         }}
       >
         {chartType === 'surface' && (
-          <GeoTiffSurfaceScene />
+          <GeoTiffSurfaceScene onScalesReady={setActiveScales} />
         )}
         {chartType === 'csv-surface' && (
-          <CsvSurfaceScene />
+          <CsvSurfaceScene onScalesReady={setActiveScales} />
         )}
         {chartType === 'bar' && (
-          <BarChartScene colorScale={genericColorScale} />
+          <BarChartScene colorScale={genericColorScale} onScalesReady={() => setActiveScales(null)} />
         )}
         {chartType === 'scatter' && (
-          <ScatterPointsScene colorScale={genericColorScale} />
+          <ScatterPointsScene colorScale={genericColorScale} onScalesReady={() => setActiveScales(null)} />
         )}
       </Canvas>
 
-      {legendScales && (
-        <Legend yScale={legendScales.yScale} colorScale={legendScales.colorScale} />
+      {activeScales && (
+        <Legend yScale={activeScales.yScale} colorScale={activeScales.colorScale} />
       )}
     </>
   );

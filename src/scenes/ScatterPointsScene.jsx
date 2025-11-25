@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { OrbitControls } from '@react-three/drei';
 import { scaleLinear } from 'd3-scale';
 import Axis from '../components/Axis';
@@ -23,7 +23,11 @@ const generateScatterData = (X_COUNT, Y_COUNT, Z_COUNT) => {
   return data;
 };
 
-const ScatterPointsScene = ({ colorScale }) => {
+const ScatterPointsScene = ({ colorScale, onScalesReady }) => {
+  useEffect(() => {
+    onScalesReady(null);
+  }, [onScalesReady]);
+
   const X_COUNT = 10;
   const Y_COUNT = 10;
   const Z_COUNT = 10;

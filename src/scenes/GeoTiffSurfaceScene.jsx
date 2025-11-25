@@ -1,11 +1,21 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { OrbitControls } from '@react-three/drei';
 import { useGeoTiff } from '../hooks/useGeoTiff';
 import Axis from '../components/Axis';
 import Surface from '../components/Surface';
 
-function GeoTiffSurfaceScene() {
-  const { surfaceData: data, scales, colorScale } = useGeoTiff('/data/sado_dem.tif');
+function GeoTiffSurfaceScene({ onScalesReady }) {
+  const { surfaceData: data, scales, colorScale } = useGeoTiff('data/sado_dem.tif');
+
+  useEffect(() => {
+    if (scales && colorScale) {
+      onScalesReady({ yScale: scales.yScale, colorScale });
+    }
+    // コンポーネントがアンマウントされるときにLegendをクリアする
+    return () => {
+      onScalesReady(null);
+    };
+  }, [scales, colorScale, onScalesReady]);
 
   if (!data || !scales) {
     return null;
