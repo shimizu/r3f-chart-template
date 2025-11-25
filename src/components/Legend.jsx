@@ -10,7 +10,7 @@ const Legend = ({ yScale, colorScale }) => {
   const gradient = `linear-gradient(to top, ${colorScale.range().join(', ')})`;
 
   return (
-    <div style={{ position: 'absolute', top: '50%', right: '20px', transform: 'translateY(-50%)', display: 'flex', alignItems: 'center' }}>
+    <div style={{ position: 'absolute', top: '50%', right: '50px', color: '#366', transform: 'translateY(-50%)', display: 'flex', alignItems: 'center' }}>
       <div style={{ width: legendWidth, height: legendHeight, background: gradient }} />
       <div style={{ marginLeft: '5px', height: legendHeight, position: 'relative' }}>
         {ticks.map((tick, i) => {
