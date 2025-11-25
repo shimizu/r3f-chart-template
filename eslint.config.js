@@ -5,7 +5,7 @@ import reactHooks from 'eslint-plugin-react-hooks'
 import reactRefresh from 'eslint-plugin-react-refresh'
 
 export default [
-  { ignores: ['dist'] },
+  { ignores: ['dist', 'reference/3d_chart_example.js'] }, // reference/3d_chart_example.js を無視対象に追加
   {
     files: ['**/*.{js,jsx}'],
     languageOptions: {
@@ -33,6 +33,11 @@ export default [
         'warn',
         { allowConstantExport: true },
       ],
+      // カスタムルール
+      'react/no-unknown-property': 'off', // r3f のプロパティを認識させるため無効化
+      'react/prop-types': 'off', // prop-types のチェックを無効化
+      'no-unused-vars': ['warn', { 'argsIgnorePattern': '^_', 'varsIgnorePattern': '^React$' }], // 未使用の変数に関する警告を調整
     },
   },
 ]
+

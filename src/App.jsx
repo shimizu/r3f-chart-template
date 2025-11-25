@@ -1,23 +1,46 @@
-import React from 'react';
+import React, { useState, useMemo } from 'react';
 import { Canvas } from '@react-three/fiber';
+import { scaleSequential } from 'd3-scale';
+import { interpolateTurbo } from 'd3-scale-chromatic';
 
 import { useGeoTiff } from './hooks/useGeoTiff';
 import SurfaceScene from './SurfaceScene';
+import BarChartScene from './BarChartScene';
+import ScatterPointsScene from './ScatterPointsScene';
 import Legend from './components/Legend';
 import './App.css';
 
 function App() {
-  const { surfaceData, scales, colorScale } = useGeoTiff('/data/sado_dem.tif');
+  const [chartType, setChartType] = useState('surface');
+
+  // SurfaceChart用のデータとスケール
+  const { surfaceData, scales, colorScale: surfaceColorScale } = useGeoTiff('/data/sado_dem.tif');
+
+  // BarChartとScatterChart用の汎用カラースケール
+  const genericColorScale = useMemo(() => {
+    return scaleSequential([0, 100], interpolateTurbo);
+  }, []);
 
   return (
     <>
-      <div className="info-panel">
-        <h1>GeoTIFF 3D Surface</h1>
-        <p>
+      <div className="app-header">
+        <h1 className="app-title">3D Chart Demo</h1>
+        <p className="info-text">
           Left Click: Rotate<br/>
           Right Click: Pan<br/>
           Scroll: Zoom
         </p>
+        <div className="chart-selector">
+          <button onClick={() => setChartType('surface')} disabled={chartType === 'surface'}>
+            Surface Chart
+          </button>
+          <button onClick={() => setChartType('bar')} disabled={chartType === 'bar'}>
+            Bar Chart
+          </button>
+          <button onClick={() => setChartType('scatter')} disabled={chartType === 'scatter'}>
+            Scatter Chart
+          </button>
+        </div>
       </div>
       
       <Canvas 
@@ -27,10 +50,20 @@ function App() {
           fov: 45
         }}
       >
-        <SurfaceScene data={surfaceData} scales={scales} colorScale={colorScale} />
+        {chartType === 'surface' && (
+          <SurfaceScene data={surfaceData} scales={scales} colorScale={surfaceColorScale} />
+        )}
+        {chartType === 'bar' && (
+          <BarChartScene colorScale={genericColorScale} />
+        )}
+        {chartType === 'scatter' && (
+          <ScatterPointsScene colorScale={genericColorScale} />
+        )}
       </Canvas>
 
-      <Legend yScale={scales?.yScale} colorScale={colorScale} />
+      {chartType === 'surface' && (
+        <Legend yScale={scales?.yScale} colorScale={surfaceColorScale} />
+      )}
     </>
   );
 }

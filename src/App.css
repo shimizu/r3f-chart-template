@@ -43,6 +43,9 @@ body {
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 12px;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  display: flex; /* 追加 */
+  flex-direction: column; /* 追加 */
+  gap: 10px; /* 追加 */
 }
 
 .app-title {
@@ -51,6 +54,43 @@ body {
   color: #00d4ff;
   margin: 0;
   text-shadow: 0 0 10px rgba(0, 212, 255, 0.3);
+}
+
+.info-text { /* 追加 */
+  font-size: 14px; /* 追加 */
+  line-height: 1.5; /* 追加 */
+  color: #c0caff; /* 追加 */
+}
+
+.chart-selector {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px; /* 適切なマージン */
+}
+
+.chart-selector button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 8px 15px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  transition: background-color 0.3s ease, transform 0.1s ease;
+  box-shadow: 0 2px 8px rgba(0, 123, 255, 0.3);
+}
+
+.chart-selector button:hover:not(:disabled) {
+  background-color: #0056b3;
+  transform: translateY(-1px);
+}
+
+.chart-selector button:disabled {
+  background-color: #4a5568;
+  color: #a0aec0;
+  cursor: not-allowed;
+  box-shadow: none;
 }
 
 /* 3Dキャンバスエリア */

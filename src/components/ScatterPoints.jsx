@@ -2,7 +2,7 @@ import React from 'react';
 import { Instance, Instances } from '@react-three/drei';
 
 // --- ScatterPoints コンポーネント ---
-const ScatterPoints = ({ data, scales, point_size, color_range }) => {
+const ScatterPoints = ({ data, scales, point_size, colorScale }) => {
   const { xScale, yScale, zScale } = scales;
   
   return (
@@ -11,11 +11,11 @@ const ScatterPoints = ({ data, scales, point_size, color_range }) => {
         <sphereGeometry args={[point_size, 16, 16]} />
         <meshStandardMaterial roughness={0.5} />
         
-        {data.map((point, i) => (
+        {data.map((point) => (
           <Instance
             key={point.id}
             position={[xScale(point.x), yScale(point.y), zScale(point.z)]}
-            color={color_range[i % color_range.length]}
+            color={colorScale(point.y)}
             onClick={(e) => {
                 e.stopPropagation();
                 console.log("Clicked:", point);

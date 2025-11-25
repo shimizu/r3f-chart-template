@@ -1,8 +1,7 @@
-import React, { useRef, useEffect } from 'react';
+import React from 'react';
 import { Instance, Instances } from '@react-three/drei';
-import * as THREE from 'three';
 
-const Bar = ({ data, scales, color_range }) => {
+const Bar = ({ data, scales, colorScale }) => {
   const { xScale, yScale, zScale } = scales;
 
   return (
@@ -15,7 +14,7 @@ const Bar = ({ data, scales, color_range }) => {
         return (
           <Instance
             key={point.id}
-            color={color_range[point.id % color_range.length]}
+            color={colorScale(point.y)}
             position={[
               xScale(point.x),
               yScale(0) + ySize / 2,

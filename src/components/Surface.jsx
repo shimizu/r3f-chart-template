@@ -35,7 +35,7 @@ const Surface = ({ data, scales, colorScale }) => {
     geom.computeVertexNormals(); // 法線を再計算してライティングを正しくする
     
     return geom;
-  }, [data, scales, colorScale]);
+  }, [width, height, widthSegments, heightSegments, yScale, data, colorScale]);
 
   return (
     <mesh geometry={geometry}>

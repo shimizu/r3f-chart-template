@@ -5,7 +5,6 @@ import Axis from './components/Axis';
 import Bar from './components/Bar';
 
 // --- 定数 ---
-const COLOR_RANGE = ['#ff6b6b', '#4ecdc4', '#ffe66d', '#1a535c', '#ff9f1c'];
 const X_COUNT = 10;
 const Z_COUNT = 10;
 
@@ -27,7 +26,7 @@ const generateBarData = () => {
   return data;
 };
 
-function BarChartScene() {
+function BarChartScene({ colorScale }) {
   const data = useMemo(() => generateBarData(), []);
 
   const scales = useMemo(() => {
@@ -57,7 +56,7 @@ function BarChartScene() {
 
       <group>
         <Axis scales={scales} domain={scales.domain} />
-        <Bar data={data} scales={scales} color_range={COLOR_RANGE} />
+        <Bar data={data} scales={scales} colorScale={colorScale} />
       </group>
     </>
   );
