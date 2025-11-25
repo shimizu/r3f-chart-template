@@ -1,15 +1,15 @@
 import { useState, useEffect } from 'react';
-import * as d3 from 'd3';
+import { csv } from 'd3-fetch';
+import { scaleLinear, scaleSequential } from 'd3-scale';
+import { interpolateTurbo } from 'd3-scale-chromatic';
 
 export const useCsvData = (url) => {
-  const [data, setData] = useState(null);
+  const [data, setData] = useState({ surfaceData: null, scales: null, colorScale: null });
 
   useEffect(() => {
     if (url) {
-      d3.csv(url).then(parsedData => {
-        // d3.csv は各行をオブジェクトとしてパースする
-        // ヘッダー（列名）を取得
-        const columns = parsedData.columns.slice(1); // 最初の列は行インデックスなので除外
+      csv(url).then(parsedData => {
+        const columns = parsedData.columns.slice(1);
         const width = columns.length;
         const height = parsedData.length;
 
@@ -25,20 +25,38 @@ export const useCsvData = (url) => {
             if (value > max) max = value;
           });
         });
-        
-        setData({
+
+        const surfaceData = {
           width,
           height,
           values,
           min,
           max,
-          // Surfaceコンポーネントが期待するwidthSegmentsとheightSegmentsも追加
           widthSegments: width - 1,
           heightSegments: height - 1,
-        });
+        };
+        
+        const xzRange = [-15, 15];
+        const yRange = [0, 10];
+
+        const scales = {
+          xScale: scaleLinear().domain([0, width - 1]).range(xzRange),
+          yScale: scaleLinear().domain([min, max]).range(yRange),
+          zScale: scaleLinear().domain([0, height - 1]).range(xzRange),
+          domain: {
+            xMin: 0, xMax: width - 1,
+            yMin: min, yMax: max,
+            zMin: 0, zMax: height - 1,
+          }
+        };
+
+        const colorScale = scaleSequential([min, max], interpolateTurbo);
+
+        setData({ surfaceData, scales, colorScale });
       });
     }
   }, [url]);
 
   return data;
 };
+

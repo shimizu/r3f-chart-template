@@ -1,9 +1,12 @@
 import React from 'react';
 import { OrbitControls } from '@react-three/drei';
+import { useGeoTiff } from '../hooks/useGeoTiff';
 import Axis from '../components/Axis';
 import Surface from '../components/Surface';
 
-function GeoTiffSurfaceScene({ data, scales, colorScale }) {
+function GeoTiffSurfaceScene() {
+  const { surfaceData: data, scales, colorScale } = useGeoTiff('/data/sado_dem.tif');
+
   if (!data || !scales) {
     return null;
   }
