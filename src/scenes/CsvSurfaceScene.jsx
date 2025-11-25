@@ -2,12 +2,12 @@ import React, { useMemo } from 'react';
 import { OrbitControls } from '@react-three/drei';
 import { scaleLinear, scaleSequential } from 'd3-scale';
 import { interpolateTurbo } from 'd3-scale-chromatic';
-import { useCsvData } from './hooks/useCsvData';
-import Surface from './components/Surface';
-import Axis from './components/Axis';
+import { useCsvData } from '../hooks/useCsvData';
+import Surface from '../components/Surface';
+import Axis from '../components/Axis';
 
 const CsvSurfaceScene = () => {
-  const surfaceData = useCsvData('/data/mt_bruno_elevation.csv');
+  const surfaceData = useCsvData('./data/mt_bruno_elevation.csv');
 
   const { scales, colorScale } = useMemo(() => {
     if (!surfaceData) return { scales: null, colorScale: null };

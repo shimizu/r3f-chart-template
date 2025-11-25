@@ -1,8 +1,8 @@
 import React, { useMemo } from 'react';
 import { OrbitControls } from '@react-three/drei';
 import { scaleLinear } from 'd3-scale';
-import Axis from './components/Axis';
-import Bar from './components/Bar';
+import Axis from '../components/Axis';
+import Bar from '../components/Bar';
 
 // --- 定数 ---
 const X_COUNT = 10;

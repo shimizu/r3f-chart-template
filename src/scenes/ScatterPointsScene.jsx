@@ -1,8 +1,8 @@
 import React from 'react';
 import { OrbitControls } from '@react-three/drei';
 import { scaleLinear } from 'd3-scale';
-import Axis from './components/Axis';
-import ScatterPoints from './components/ScatterPoints';
+import Axis from '../components/Axis';
+import ScatterPoints from '../components/ScatterPoints';
 
 // --- ヘルパー ---
 const generateScatterData = (X_COUNT, Y_COUNT, Z_COUNT) => {

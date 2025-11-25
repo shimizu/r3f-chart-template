@@ -4,10 +4,10 @@ import { scaleSequential } from 'd3-scale';
 import { interpolateTurbo } from 'd3-scale-chromatic';
 
 import { useGeoTiff } from './hooks/useGeoTiff';
-import SurfaceScene from './SurfaceScene';
-import BarChartScene from './BarChartScene';
-import ScatterPointsScene from './ScatterPointsScene';
-import CsvSurfaceScene from './CsvSurfaceScene'; // CsvSurfaceSceneをインポート
+import GeoTiffSurfaceScene from './scenes/GeoTiffSurfaceScene';
+import BarChartScene from './scenes/BarChartScene';
+import ScatterPointsScene from './scenes/ScatterPointsScene';
+import CsvSurfaceScene from './scenes/CsvSurfaceScene'; // CsvSurfaceSceneをインポート
 import Legend from './components/Legend';
 import './App.css';
 
@@ -15,7 +15,7 @@ function App() {
   const [chartType, setChartType] = useState('surface');
 
   // SurfaceChart用のデータとスケール
-  const { surfaceData, scales, colorScale: surfaceColorScale } = useGeoTiff('/data/sado_dem.tif');
+  const { surfaceData, scales, colorScale: surfaceColorScale } = useGeoTiff('./data/sado_dem.tif');
 
   // BarChartとScatterChart用の汎用カラースケール
   const genericColorScale = useMemo(() => {
@@ -55,7 +55,7 @@ function App() {
         }}
       >
         {chartType === 'surface' && (
-          <SurfaceScene data={surfaceData} scales={scales} colorScale={surfaceColorScale} />
+          <GeoTiffSurfaceScene data={surfaceData} scales={scales} colorScale={surfaceColorScale} />
         )}
         {chartType === 'csv-surface' && (
           <CsvSurfaceScene />

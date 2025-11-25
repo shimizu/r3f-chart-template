@@ -1,9 +1,9 @@
 import React from 'react';
 import { OrbitControls } from '@react-three/drei';
-import Axis from './components/Axis';
-import Surface from './components/Surface';
+import Axis from '../components/Axis';
+import Surface from '../components/Surface';
 
-function SurfaceScene({ data, scales, colorScale }) {
+function GeoTiffSurfaceScene({ data, scales, colorScale }) {
   if (!data || !scales) {
     return null;
   }
@@ -37,4 +37,4 @@ function SurfaceScene({ data, scales, colorScale }) {
   );
 }
 
-export default SurfaceScene;
+export default GeoTiffSurfaceScene;
