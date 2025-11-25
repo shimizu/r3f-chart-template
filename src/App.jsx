@@ -16,8 +16,8 @@ function App() {
   const [chartType, setChartType] = useState('surface');
 
   // 各チャート用のデータをここで取得
-  const { scales: geoTiffScales, colorScale: geoTiffColorScale } = useGeoTiff('/data/sado_dem.tif') || {};
-  const { scales: csvScales, colorScale: csvColorScale } = useCsvData('/data/mt_bruno_elevation.csv') || {};
+  const { scales: geoTiffScales, colorScale: geoTiffColorScale } = useGeoTiff('./data/sado_dem.tif') || {};
+  const { scales: csvScales, colorScale: csvColorScale } = useCsvData('./data/mt_bruno_elevation.csv') || {};
 
   // BarChartとScatterChart用の汎用カラースケール
   const genericColorScale = useMemo(() => {
